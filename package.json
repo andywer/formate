@@ -1,0 +1,26 @@
+{
+  "name": "formate",
+  "version": "0.0.0",
+  "description": "Modular form handling for React.js made easy.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andywer/formate.git"
+  },
+  "keywords": [
+    "react",
+    "form",
+    "field",
+    "modular",
+    "middleware"
+  ],
+  "author": "Andy Wermke <andy@dev.next-step-software.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andywer/formate/issues"
+  },
+  "homepage": "https://github.com/andywer/formate#readme"
+}
