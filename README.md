@@ -2,6 +2,7 @@
 
 Modular form handling for React.js made easy.
 
+
 ## Usage
 
 ```js
@@ -39,12 +40,24 @@ export default Formate(MyForm)
 // export default formate(MyForm, evenMoreMiddlewares)
 ```
 
+
 ## Installation
 
 ```sh
 npm install --save formate
 # or --save-dev, depending on your frontend dependency philosophy
 ```
+
+
+## Credits
+
+The initial idea for this package grew out of enduring brain-storming with
+[jhohlfeld](https://github.com/jhohlfeld) who also wrote the initial prototype!
+
+Another influence was [react-reformed](https://github.com/davezuko/react-reformed)
+which showed a better way of storing/managing form data as the initial draft by
+decorating the whole form and storing form data in the decorating component's state.
+
 
 ## License
 
