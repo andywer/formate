@@ -1,5 +1,7 @@
 # formate
 
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+
 Modular form handling for React.js made easy.
 
 
@@ -21,7 +23,7 @@ function MyForm ({ Field, formData, setFormData }) {
       {/* A middleware may provide shortcuts to frequently used form field components */}
       <Field.input name='lastName' />
 
-      {/* Manual usage */}
+      {/* Manual usage; not recommended, since form field cannot be decorated by middleware */}
       <input name='title' value={formData.title} onChange={(evt) => setFormData('title', evt.target.value)} />
     </form>
   )
@@ -47,6 +49,47 @@ export default Formate(MyForm)
 npm install --save formate
 # or --save-dev, depending on your frontend dependency philosophy
 ```
+
+
+## How to write a middleware
+
+```js
+function myMiddleware (api, hook) {
+  // This hook adds a new prop to every form field: 'isEmpty' (boolean)
+  hook('formfield', ({ component, props, statics }) => {
+    const newProps = { ...props, isEmpty: isFieldEmpty(props.name) }
+    return { component, props: newProps, statics }
+  })
+
+  // This hook adds a new prop to the form field: 'containsEmptyFields' (boolean)
+  hook('form.props', (props) => {
+    const formNames = Object.keys(api.getFormData())
+    const containsEmptyFields = formNames.findIndex((formName) => isFieldEmpty(formName)) > -1
+    return { ...props, containsEmptyFields }
+  })
+
+  function isFieldEmpty (name) {
+    return api.getFormData()[ formName ] !== ''
+  }
+}
+
+// Usage:
+export default formate(MyForm, [ myMiddleware ])
+```
+
+
+Use the `api` object (first parameter of your middleware) to get/set additional data:
+
+- `formProps`: Object containing the form's props. Use `form.props` hook to alter those props.
+- `getFormData`/`setFormData`: Get/set form data (The form fields' value).
+- `getStateData`/`setStateData`: Use these methods to get/set additional stateful data on the form (like errors or such).
+
+Hooks you can use:
+
+- `form.props`: Method `(props: object) => props: object`. Use it to change the form element's props.
+- `formfield`: Method `({ component: class|function, props: object, statics: object }) => ({ component: class|function, props: object, statics: object })`. Use it to change form field props or statics on the form field class. Or return another component that decorates the form field component.
+- `getFormData`, `setFormData`: Override the existing implementations by using these hooks.
+- `getStateData`/`setStateData`: Override the existing implementations by using these hooks.
 
 
 ## Credits

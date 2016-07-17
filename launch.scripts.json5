@@ -1,0 +1,6 @@
+{
+  default: [ "build", "test" ],
+
+  build: "babel src/ -d lib/ --source-maps",
+  test: "standard src/"
+}
