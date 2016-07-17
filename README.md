@@ -59,6 +59,7 @@ function myMiddleware (api, hook) {
   hook('formfield', ({ component, props, statics }) => {
     const newProps = { ...props, isEmpty: isFieldEmpty(props.name) }
     return { component, props: newProps, statics }
+    // returning just `{ props: newProps }` would work, too
   })
 
   // This hook adds a new prop to the form field: 'containsEmptyFields' (boolean)
