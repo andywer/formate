@@ -1,5 +1,6 @@
 import React from 'react'
 import { applyMiddlewares } from './applyMiddlewares'
+import { createDecoratedFormComponent } from './form'
 import { createDecoratedFormFieldComponent } from './formField'
 import { dedup } from './util'
 
@@ -14,7 +15,8 @@ function Formate (FormComponent, middlewares = []) {
 
       const initial = {
         decorateField: ({ component, props, statics }) => ({ component, props, statics }),
-        formProps: props,
+        decorateForm: ({ component, props, statics }) => ({ component, props, statics }),
+        userFormProps: props,
         getFormData: () => this.state.formData,
         setFormData: (formDataUpdate) => this.setFormData(formDataUpdate),
         getStateData: () => this.state.additional,
@@ -22,17 +24,19 @@ function Formate (FormComponent, middlewares = []) {
       }
 
       const enhanced = applyMiddlewares(initial, dedup(middlewares))
-      const { decorateField, formProps, getFormData, setFormData } = enhanced
+      const { decorateField, decorateForm, userFormProps, getFormData, setFormData } = enhanced
 
       const Field = createDecoratedFormFieldComponent(decorateField)
-      Object.assign(this, { Field, formProps, getFormData, setFormData })
+      const Form = createDecoratedFormComponent(decorateForm)
+
+      Object.assign(this, { Field, Form, userFormProps, getFormData, setFormData })
     }
 
     render () {
       const { formData } = this.state
-      const { Field, decorateField, formProps, setFormData } = this
+      const { Field, Form, decorateField, userFormProps, setFormData } = this
 
-      return <FormComponent {...formProps} {...{ Field, formData, setFormData }} />
+      return <FormComponent {...userFormProps} {...{ Field, Form, formData, setFormData }} />
     }
 
     /**

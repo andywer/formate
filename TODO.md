@@ -7,7 +7,6 @@
   - Form field validation
   - Error handling / displaying
 
-- Maybe provide `Form` component as prop and provide hooks (for onSubmit handling and initial formData)
 - Idea: Maybe the lib can be made framework-agnostic, with some React-bindings on top of it
 
 

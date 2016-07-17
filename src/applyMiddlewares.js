@@ -1,7 +1,7 @@
 /**
  * @param {object} api    Object of functions and properties which represent the middleware API.
  *                        This API object is altered by the middlewares.
- *                        { decorateField, formProps, getFormData, setFormData, getStateData, setStateData }
+ *                        { decorateField, decorateForm, userFormProps, getFormData, setFormData, getStateData, setStateData }
  * @param {function[]} middlewares
  */
 function applyMiddlewares (api, middlewares) {
@@ -23,11 +23,23 @@ function applyMiddleware (middleware, api) {
 
 function hookOntoApi (api, name, method) {
   switch (name) {
-    case 'form.props':
+    case 'userform.props':
       return {
         ...api,
-        formProps: method(api.formProps)
+        userFormProps: method(api.userFormProps)
       }
+
+    case 'form':
+      return {
+        ...api,
+        decorateForm () {
+          return {
+            ...api.decorateForm(params),
+            ...method(params)
+          }
+        }
+      }
+
     case 'formfield':
       return {
         ...api,

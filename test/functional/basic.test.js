@@ -7,11 +7,11 @@ import Formate from '../../src'
 test('it can render a simple form', (t) => {
   const onChange = sinon.spy()
 
-  function TestForm ({ Field, formData, method }) {
+  function TestForm ({ Field, Form, formData, method }) {
     return (
-      <form method={method}>
+      <Form method={method}>
         <Field component='input' onChange={onChange} value='xy' />
-      </form>
+      </Form>
     )
   }
   const DecoratedTestForm = Formate(TestForm)
