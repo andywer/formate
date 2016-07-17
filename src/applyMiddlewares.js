@@ -8,6 +8,7 @@ function applyMiddlewares (api, middlewares) {
   middlewares.forEach((middleware) => {
     api = applyMiddleware(middleware, api)
   })
+  return api
 }
 
 function applyMiddleware (middleware, api) {

@@ -2,5 +2,5 @@
   default: [ "build", "test" ],
 
   build: "babel src/ -d lib/ --source-maps",
-  test: "standard src/"
+  test: "standard src/ && ava test/**/*.test.js"
 }
