@@ -23,6 +23,9 @@ function MyForm ({ Field, Form, formData, setFormData }) {
       <Field component='input' name='firstName' />
       {/* A middleware may provide shortcuts to frequently used form field components */}
       <Field.input name='lastName' />
+
+      {/* A default submit button could also be provided by a middleware: <Form.SubmitButton /> */}
+      <button type='submit'>Submit</button>
     </Form>
   )
 }
