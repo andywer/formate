@@ -2,7 +2,8 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-Modular form handling for React.js made easy.
+Modular form handling for React.js made easy. A lot of cool features loosely coupled
+via middleware concept.
 
 
 ## Usage
@@ -18,29 +19,32 @@ const propTypes = {
 function MyForm ({ Field, Form, formData, setFormData }) {
   return (
     <Form>
-      {/* Rather low-level API; `component='input'` might be used as default if no `component` prop is provided */}
+      {/* A middleware may provide default getter/setter based on `name` prop */}
       <Field component='input' name='firstName' />
       {/* A middleware may provide shortcuts to frequently used form field components */}
       <Field.input name='lastName' />
-
-      {/* Manual usage; not recommended, since form field cannot be decorated by middleware */}
-      <input name='title' value={formData.title} onChange={(evt) => setFormData('title', evt.target.value)} />
     </Form>
   )
 }
 
 MyForm.propTypes = propTypes
 
-export default Formate(MyForm)
+export default Formate(MyForm, [ middleware1, middleware2 ])
 
 // - or -
 // export default Formate(MyForm, middlewares)
 
 // - or (to pre-configure middlewares) -
-// import { preset } from 'formate'
-// const formate = preset(middlewares)
-// export default formate(MyForm, evenMoreMiddlewares)
+
+// import { createPreset } from 'formate'
+// const preset1 = createPreset(middlewares)
+// const preset2 = preset1.concat(moreMiddlewares)
+// export default preset2(MyForm, optionallyEvenMoreMiddlewares)
 ```
+
+Formate just provides the basic API and middleware API. Middlewares provide all
+the fancy functionality like validation, error handling, automatic default
+getters/setters and so on.
 
 
 ## Installation
@@ -92,6 +96,39 @@ Hooks you can use:
 - `formfield`: Method `({ component: class|function, props: object, statics: object }) => ({ component: class|function, props: object, statics: object })`. Works like `form`, but for the form field.
 - `getFormData`, `setFormData`: Override the existing implementations by using these hooks.
 - `getStateData`/`setStateData`: Override the existing implementations by using these hooks.
+
+The `form` and `formfield` hooks are run on `render()`. This gives you the ability to set props / decorate the components according to current form data (use `api.getFormdata()`), but make sure
+that they are fast and pure (don't call setters).
+
+
+## Low level vs. nice by middleware
+
+```js
+import React, { PropTypes } from 'react'
+import Formate from 'formate'
+
+const propTypes = {
+  Field: PropTypes.object.isRequired
+}
+
+function MyForm ({ Field, Form, formData, setFormData }) {
+  return (
+    <Form>
+      {/* Rather low-level API; `component='input'` might be used as default if no `component` prop is provided */}
+      <Field component='input' name='firstName' />
+      {/* A middleware may provide shortcuts to frequently used form field components */}
+      <Field.input name='lastName' />
+
+      {/* Manual usage; not recommended, since form field cannot be decorated by middleware */}
+      <input name='title' value={formData.title} onChange={(evt) => setFormData('title', evt.target.value)} />
+    </Form>
+  )
+}
+
+MyForm.propTypes = propTypes
+
+export default Formate(MyForm)
+```
 
 
 ## Credits

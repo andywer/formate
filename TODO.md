@@ -7,6 +7,7 @@
   - Form field validation
   - Error handling / displaying
 
+- Maybe: Rename `hook` => `provide` in middlewares
 - Idea: Maybe the lib can be made framework-agnostic, with some React-bindings on top of it
 
 
